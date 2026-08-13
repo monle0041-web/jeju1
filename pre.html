@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미세먼지 퇴치 대작전 · 발표자료</title>
+<style>
+:root{
+  --bg:#0b1220;
+  --panel:#152036;
+  --panel2:#1c2a45;
+  --line:#2b3d5f;
+  --text:#eaf1fb;
+  --muted:#9db0cc;
+  --blue:#4a9eff;
+  --cyan:#35d6d0;
+  --green:#3ddc84;
+  --yellow:#ffc247;
+  --red:#ff5d5d;
+  --purple:#a78bfa;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%; overflow:hidden;}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Pretendard','Malgun Gothic','맑은 고딕',-apple-system,'Segoe UI',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ===== 무대 ===== */
+#stage{position:fixed; inset:0; display:grid; place-items:center; overflow:hidden;}
+#stage::before{
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(900px 600px at 15% 0%, rgba(74,158,255,.18), transparent 60%),
+    radial-gradient(900px 600px at 85% 100%, rgba(53,214,208,.14), transparent 60%);
+  pointer-events:none;
+}
+.slide{
+  position:absolute; inset:0;
+  display:none; flex-direction:column; justify-content:center;
+  padding:5vh 7vw; max-width:1400px; margin:0 auto;
+  left:0; right:0;
+}
+.slide.on{display:flex; animation:sIn .45s cubic-bezier(.2,.9,.3,1);}
+@keyframes sIn{from{opacity:0; transform:translateY(26px);} to{opacity:1; transform:none;}}
+.slide > *{position:relative; z-index:2;}
+
+/* ===== 타이포 ===== */
+.kicker{
+  display:inline-block; align-self:flex-start;
+  background:rgba(74,158,255,.16); color:var(--blue);
+  border:1px solid rgba(74,158,255,.35);
+  padding:6px 16px; border-radius:999px;
+  font-size:clamp(12px,1.4vw,15px); font-weight:800; letter-spacing:.5px;
+  margin-bottom:22px;
+}
+h1{font-size:clamp(34px,6.2vw,76px); line-height:1.18; letter-spacing:-2px; font-weight:900;}
+h2{font-size:clamp(26px,4.2vw,52px); line-height:1.25; letter-spacing:-1.4px; font-weight:900; margin-bottom:26px;}
+h3{font-size:clamp(17px,2vw,24px); font-weight:800; margin-bottom:10px;}
+.lead{font-size:clamp(15px,1.9vw,23px); line-height:1.7; color:#c3d4ea; margin-top:18px; max-width:56ch;}
+.small{font-size:clamp(12px,1.3vw,15px); color:var(--muted); line-height:1.6;}
+.hl{color:var(--cyan);}
+.hl-y{color:var(--yellow);}
+.hl-r{color:var(--red);}
+.hl-g{color:var(--green);}
+
+/* ===== 레이아웃 ===== */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:12px;}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:12px;}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:12px;}
+.grid5{display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:16px;}
+@media (max-width:820px){
+  .grid2,.grid3,.grid4,.grid5{grid-template-columns:1fr 1fr;}
+}
+
+.card{
+  background:linear-gradient(160deg,var(--panel2),rgba(21,32,54,.75));
+  border:1px solid var(--line); border-radius:20px;
+  padding:clamp(14px,2vw,26px);
+}
+.card .ic{font-size:clamp(26px,3.4vw,42px); line-height:1; margin-bottom:10px;}
+.card p{font-size:clamp(12px,1.35vw,16px); line-height:1.6; color:#bfd0e6;}
+
+/* 등급 카드 */
+.gcard{border-radius:18px; padding:clamp(12px,1.8vw,22px); border:2px solid; text-align:center;}
+.gcard .g-ic{font-size:clamp(24px,3.2vw,40px);}
+.gcard .g-nm{font-size:clamp(15px,1.9vw,22px); font-weight:900; margin:6px 0 2px;}
+.gcard .g-p{font-size:clamp(20px,2.8vw,34px); font-weight:900;}
+.gcard .g-d{font-size:clamp(11px,1.2vw,14px); color:#b9c9de; margin-top:6px; line-height:1.5;}
+
+/* 프로세스 스텝 */
+.flow{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:24px;}
+.fstep{
+  background:var(--panel2); border:1px solid var(--line); border-radius:16px;
+  padding:clamp(12px,1.6vw,20px); text-align:center; position:relative;
+}
+.fstep .n{
+  position:absolute; top:-11px; left:50%; transform:translateX(-50%);
+  background:var(--blue); color:#08111f; font-weight:900;
+  width:24px; height:24px; border-radius:50%; display:grid; place-items:center;
+  font-size:12px;
+}
+.fstep .fi{font-size:clamp(22px,3vw,36px); margin:6px 0 8px;}
+.fstep b{display:block; font-size:clamp(13px,1.5vw,18px); margin-bottom:5px;}
+.fstep span{font-size:clamp(10px,1.15vw,13px); color:#aabdd6; line-height:1.5;}
+@media (max-width:820px){ .flow{grid-template-columns:1fr 1fr 1fr;} }
+
+/* 비교 (PM10 vs PM2.5) */
+.vs{display:grid; grid-template-columns:1fr auto 1fr; gap:20px; align-items:center; margin-top:20px;}
+.vs .mid{font-size:clamp(18px,2.4vw,30px); font-weight:900; color:var(--muted);}
+.pmbox{border-radius:20px; padding:clamp(16px,2.2vw,30px); border:2px solid;}
+.pmdot{border-radius:50%; margin:0 auto 14px; display:block;}
+.pmbox h3{text-align:center;}
+.pmbox ul{list-style:none; margin-top:12px;}
+.pmbox li{font-size:clamp(12px,1.4vw,17px); line-height:1.85; padding-left:20px; position:relative; color:#cbdaee;}
+.pmbox li::before{content:'·'; position:absolute; left:6px; font-weight:900;}
+
+/* 리스트 */
+.checks{margin-top:18px;}
+.checks li{
+  list-style:none; font-size:clamp(14px,1.8vw,22px); line-height:1.9;
+  padding-left:38px; position:relative; color:#d3e0f1;
+}
+.checks li::before{
+  content:'✓'; position:absolute; left:6px; color:var(--green); font-weight:900;
+}
+
+/* 포인트 배지 */
+.pbadge{
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(255,194,71,.14); border:1px solid rgba(255,194,71,.4);
+  color:var(--yellow); font-weight:900; border-radius:999px;
+  padding:6px 16px; font-size:clamp(13px,1.5vw,18px);
+}
+
+/* 버튼 */
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  background:linear-gradient(180deg,#63b0ff,#3d8ff0); color:#08111f;
+  border:0; border-radius:16px; padding:16px 32px;
+  font-size:clamp(15px,1.7vw,20px); font-weight:900; cursor:pointer;
+  font-family:inherit; text-decoration:none;
+  box-shadow:0 6px 0 #235fae, 0 14px 30px rgba(0,0,0,.45);
+  transition:transform .06s, box-shadow .06s;
+}
+.btn:active{transform:translateY(4px); box-shadow:0 2px 0 #235fae;}
+.btn.g{background:linear-gradient(180deg,#5ef0a2,#2fc46f); box-shadow:0 6px 0 #1d8a4c,0 14px 30px rgba(0,0,0,.45);}
+.btn.g:active{box-shadow:0 2px 0 #1d8a4c;}
+
+/* 인용 박스 */
+.quote{
+  border-left:5px solid var(--yellow); background:rgba(255,194,71,.09);
+  border-radius:0 16px 16px 0; padding:clamp(16px,2.2vw,28px);
+  font-size:clamp(15px,2vw,26px); line-height:1.65; font-weight:700; margin-top:20px;
+}
+
+/* ===== 표지 ===== */
+#s0{align-items:center; justify-content:center; text-align:center;}
+#s0 .cover-ic{font-size:clamp(56px,10vw,120px); margin-bottom:10px; animation:float 3.4s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);}}
+#s0 h1{background:linear-gradient(90deg,#7fc4ff,#35d6d0,#7fc4ff);
+  -webkit-background-clip:text; background-clip:text; color:transparent;}
+#s0 .sub{font-size:clamp(15px,2.2vw,26px); color:var(--muted); margin-top:16px; font-weight:600;}
+#s0 .meta{margin-top:34px; font-size:clamp(12px,1.4vw,16px); color:#7e93b3;}
+
+/* ===== 하단 바 ===== */
+#bar{
+  position:fixed; left:0; right:0; bottom:0; height:52px; z-index:50;
+  display:flex; align-items:center; gap:14px; padding:0 18px;
+  background:rgba(10,17,30,.82); backdrop-filter:blur(10px);
+  border-top:1px solid rgba(255,255,255,.08);
+}
+#bar .nav{display:flex; gap:6px;}
+#bar button{
+  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);
+  color:var(--text); border-radius:10px; padding:7px 13px; cursor:pointer;
+  font-family:inherit; font-size:13px; font-weight:700;
+}
+#bar button:hover{background:rgba(255,255,255,.15);}
+#bar .idx{font-size:13px; color:var(--muted); font-weight:800; white-space:nowrap;}
+#bar .title{font-size:13px; color:#8fa4c2; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+#timer{
+  margin-left:auto; font-variant-numeric:tabular-nums; font-weight:900;
+  font-size:16px; padding:6px 14px; border-radius:10px;
+  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);
+  cursor:pointer; white-space:nowrap;
+}
+#timer.run{color:var(--green); border-color:rgba(61,220,132,.5);}
+#timer.over{color:var(--red); border-color:rgba(255,93,93,.6); animation:blink 1s infinite;}
+@keyframes blink{50%{opacity:.45;}}
+#prog{position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--cyan),var(--blue)); z-index:60; transition:width .3s;}
+
+/* ===== 발표자 노트 ===== */
+#notes{
+  position:fixed; left:0; right:0; bottom:52px; z-index:49;
+  background:rgba(8,14,26,.96); border-top:1px solid var(--line);
+  padding:16px 22px; max-height:34vh; overflow-y:auto; display:none;
+}
+#notes.on{display:block;}
+#notes .nt{font-size:11px; font-weight:900; color:var(--yellow); letter-spacing:1.5px; margin-bottom:8px;}
+#notes .nb{font-size:15px; line-height:1.75; color:#d6e3f5; max-width:100ch;}
+#notes .nb b{color:var(--cyan);}
+
+/* ===== 도움말 ===== */
+#help{
+  position:fixed; inset:0; z-index:70; background:rgba(6,11,20,.9);
+  display:none; place-items:center; padding:20px; backdrop-filter:blur(5px);
+}
+#help.on{display:grid;}
+#help .box{
+  background:var(--panel); border:1px solid var(--line); border-radius:22px;
+  padding:32px; max-width:520px; width:100%;
+}
+#help h3{margin-bottom:18px; font-size:22px;}
+#help .kv{display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px dashed var(--line); font-size:15px;}
+#help .kv:last-of-type{border:0;}
+#help kbd{
+  background:#22334f; border:1px solid #3b5075; border-bottom-width:3px;
+  border-radius:7px; padding:3px 10px; font-family:inherit; font-size:13px; font-weight:800;
+}
+@media print{ #bar,#notes,#help,#prog{display:none !important;} }
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div id="stage">
+
+<!-- ══════════ 0. 표지 ══════════ -->
+<section class="slide on" data-title="표지"
+  data-note="여러분, 오늘 아침 하늘 보셨나요? 뿌옇게 보이던 그 공기 속에는 우리 눈에 보이지 않는 <b>미세먼지</b>가 들어 있습니다. 저는 미세먼지의 위험성을 더 쉽고 재미있게 알리기 위해 <b>‘미세먼지 퇴치 대작전’</b>이라는 웹 게임을 만들었습니다.">
+  <div id="s0" style="display:flex; flex-direction:column; align-items:center;">
+    <div class="cover-ic">😷💨</div>
+    <h1>미세먼지 퇴치 대작전</h1>
+    <p class="sub">마스크와 손소독제로 지키는 우리 건강</p>
+    <div class="meta">웹 게임으로 배우는 미세먼지 예방 · 발표 시간 3분</div>
+  </div>
+</section>
+
+<!-- ══════════ 1. 발표 목적 ══════════ -->
+<section class="slide" data-title="발표 목적"
+  data-note="왜 하필 게임이냐고요? 미세먼지가 위험하다는 건 다들 압니다. 그런데 <b>‘그래서 오늘 뭘 해야 하지?’</b>는 잘 모릅니다. 포스터나 설명문은 한 번 읽고 잊어버리지만, <b>직접 손으로 해본 것은 기억에 남습니다.</b> 그래서 보는 자료가 아니라 <b>해보는 자료</b>를 만들었습니다.">
+  <span class="kicker">01 · 발표 목적</span>
+  <h2>왜 <span class="hl">게임</span>으로 만들었을까요?</h2>
+  <div class="grid3">
+    <div class="card">
+      <div class="ic">😐</div>
+      <h3>알지만 실천은 안 해요</h3>
+      <p>“미세먼지는 나쁘다”는 다들 알지만, 정작 오늘 무엇을 해야 하는지는 잘 모릅니다.</p>
+    </div>
+    <div class="card">
+      <div class="ic">📄</div>
+      <h3>읽는 자료는 잊혀져요</h3>
+      <p>포스터와 안내문은 한 번 보고 지나갑니다. 기억에 남지 않습니다.</p>
+    </div>
+    <div class="card" style="border-color:rgba(53,214,208,.5);">
+      <div class="ic">🎮</div>
+      <h3 class="hl">해본 것은 남아요</h3>
+      <p>직접 마스크를 씌우고 퀴즈를 풀면, 예방 수칙이 <b>손에 기억</b>됩니다.</p>
+    </div>
+  </div>
+  <p class="lead">그래서 <b class="hl">보는 자료</b>가 아니라 <b class="hl">해보는 자료</b>를 만들었습니다.</p>
+</section>
+
+<!-- ══════════ 2. 미세먼지란 (PM10 vs PM2.5) ══════════ -->
+<section class="slide" data-title="PM10 vs PM2.5"
+  data-note="미세먼지는 크게 두 가지입니다. <b>PM10</b>은 지름 10마이크로미터 이하, 머리카락 굵기의 약 7분의 1입니다. 코와 목에 걸립니다. <b>PM2.5, 초미세먼지</b>는 그보다 4배 더 작아서 코털도 못 거릅니다. 폐포를 지나 <b>혈관까지</b> 들어갑니다. 이 게임에서 두 먼지를 굳이 나눈 이유가 여기 있습니다.">
+  <span class="kicker">02 · 미세먼지란</span>
+  <h2>크기가 작을수록 <span class="hl-r">더 깊이</span> 들어갑니다</h2>
+  <div class="vs">
+    <div class="pmbox" style="border-color:rgba(201,169,120,.6); background:rgba(201,169,120,.09);">
+      <span class="pmdot" style="width:74px; height:74px; background:radial-gradient(circle at 35% 30%,#e0c496,#9a7c50);"></span>
+      <h3 style="color:#e0c496;">미세먼지 · PM10</h3>
+      <ul>
+        <li>지름 <b>10㎛ 이하</b></li>
+        <li>머리카락 굵기의 약 <b>1/7</b></li>
+        <li>코·목·기관지에 걸림</li>
+        <li>기침, 인후통, 비염 유발</li>
+      </ul>
+    </div>
+    <div class="mid">VS</div>
+    <div class="pmbox" style="border-color:rgba(255,93,93,.5); background:rgba(255,93,93,.09);">
+      <span class="pmdot" style="width:40px; height:40px; background:radial-gradient(circle at 35% 30%,#a3a9bd,#575d70); margin-top:34px;"></span>
+      <h3 style="color:#ffa8a8;">초미세먼지 · PM2.5</h3>
+      <ul>
+        <li>지름 <b>2.5㎛ 이하</b></li>
+        <li>PM10보다 <b>4배 더 작음</b></li>
+        <li>폐포를 지나 <b class="hl-r">혈관까지</b> 침투</li>
+        <li>천식, 심혈관 질환 위험 ↑</li>
+      </ul>
+    </div>
+  </div>
+  <p class="small" style="margin-top:20px;">※ 그래서 게임에서도 <b>마스크는 PM10</b>, <b>손소독제는 PM2.5</b>로 대응 방법을 나누었습니다.</p>
+</section>
+
+<!-- ══════════ 3. 미세먼지의 과정 ══════════ -->
+<section class="slide" data-title="미세먼지 5단계 과정"
+  data-note="게임을 처음 켜면 이 5단계를 먼저 알려줍니다. 자동차와 공장에서 <b>발생</b>하고, 바람이 약하면 빠져나가지 못하고 <b>축적</b>되고, 우리가 숨 쉬며 <b>흡입</b>하고, 그것이 <b>건강 영향</b>으로 이어집니다. 마지막 5단계 <b>예방</b>이 이 게임의 목표입니다. 앞의 4단계는 못 막아도, 마지막 한 단계는 우리가 막을 수 있습니다.">
+  <span class="kicker">03 · 미세먼지의 과정</span>
+  <h2>발생부터 예방까지, <span class="hl">5단계</span></h2>
+  <div class="flow">
+    <div class="fstep"><div class="n">1</div><div class="fi">🏭</div><b>발생</b>
+      <span>자동차 배기가스, 공장·발전소 매연, 난방과 조리</span></div>
+    <div class="fstep"><div class="n">2</div><div class="fi">🌫️</div><b>이동·축적</b>
+      <span>바람이 약하고 대기가 정체되면 그대로 쌓임</span></div>
+    <div class="fstep"><div class="n">3</div><div class="fi">👃</div><b>흡입</b>
+      <span>PM10은 코·목, PM2.5는 폐포와 혈관까지</span></div>
+    <div class="fstep"><div class="n">4</div><div class="fi">🫁</div><b>건강 영향</b>
+      <span>기침, 천식, 기관지염, 심혈관 질환</span></div>
+    <div class="fstep" style="border-color:rgba(61,220,132,.55); background:rgba(61,220,132,.08);">
+      <div class="n" style="background:var(--green);">5</div><div class="fi">🛡️</div><b class="hl-g">예방</b>
+      <span>마스크·손 씻기·환기·대중교통 — <b>게임의 목표</b></span></div>
+  </div>
+  <p class="lead">앞의 네 단계는 혼자 막기 어렵지만, <b class="hl-g">마지막 한 단계는 오늘 당장 할 수 있습니다.</b></p>
+</section>
+
+<!-- ══════════ 4. 게임 소개 ══════════ -->
+<section class="slide" data-title="게임 규칙"
+  data-note="게임 규칙은 단순합니다. 예방 용품은 <b>마스크</b>와 <b>손소독제</b> 두 가지. 마스크는 큰 먼지 PM10만, 손소독제는 작은 먼지 PM2.5만 막습니다. 아무거나 쏘면 튕겨 나갑니다. <b>‘상황에 맞는 예방법을 골라야 한다’</b>는 걸 몸으로 익히게 하려는 장치입니다. 목표량을 없애면 퀴즈가 나오고, 그 퀴즈를 맞혀야 그 단계를 진짜로 퇴치합니다.">
+  <span class="kicker">04 · 게임 소개</span>
+  <h2>예방 용품으로 미세먼지를 <span class="hl">퇴치</span>합니다</h2>
+  <div class="grid2">
+    <div class="card" style="border-color:rgba(74,158,255,.45);">
+      <div class="ic">😷</div>
+      <h3>마스크 → <span style="color:#e0c496;">PM10</span> 전용</h3>
+      <p>큰 미세먼지를 막습니다. 실제로도 KF80 이상 보건용 마스크가 1차 방어선입니다.</p>
+    </div>
+    <div class="card" style="border-color:rgba(53,214,208,.45);">
+      <div class="ic">🧴</div>
+      <h3>손소독제 → <span style="color:#ffa8a8;">PM2.5</span> 전용</h3>
+      <p>작은 초미세먼지를 막습니다. 손에 묻은 먼지와 세균을 함께 줄여줍니다.</p>
+    </div>
+  </div>
+  <div class="quote">
+    ⚠️ 잘못된 용품을 쓰면 <b class="hl-y">튕겨 나갑니다.</b><br>
+    <span style="font-size:.72em; color:#c3d4ea; font-weight:600;">상황에 맞는 예방법을 골라야 한다는 것을 손으로 익히게 하는 장치입니다.</span>
+  </div>
+</section>
+
+<!-- ══════════ 5. 등급 시스템 ══════════ -->
+<section class="slide" data-title="등급 & 포인트"
+  data-note="핵심 장치입니다. 미세먼지 예보 등급은 <b>좋음·보통·나쁨·매우 나쁨</b> 4단계인데, 게임에서 등급이 나빠질수록 <b>먼지가 쏟아지는 속도가 실제로 빨라지고 하늘도 뿌예집니다.</b> 좋음일 때는 0.95초에 한 마리, 매우 나쁨일 때는 0.25초에 한 마리, 거의 <b>4배</b>입니다. 대신 어려운 만큼 이겼을 때 포인트도 1점부터 4점까지 더 많이 받습니다. 지면 그만큼 잃습니다.">
+  <span class="kicker">05 · 등급 시스템</span>
+  <h2>등급이 나쁠수록 <span class="hl-r">먼지가 쏟아집니다</span></h2>
+  <div class="grid4">
+    <div class="gcard" style="border-color:rgba(74,158,255,.6); background:rgba(74,158,255,.09);">
+      <div class="g-ic">🌤️</div><div class="g-nm" style="color:var(--blue);">좋음</div>
+      <div class="g-p" style="color:var(--blue);">1P</div>
+      <div class="g-d">0.95초당 1마리<br>목표 6마리</div>
+    </div>
+    <div class="gcard" style="border-color:rgba(61,220,132,.6); background:rgba(61,220,132,.09);">
+      <div class="g-ic">⛅</div><div class="g-nm" style="color:var(--green);">보통</div>
+      <div class="g-p" style="color:var(--green);">2P</div>
+      <div class="g-d">0.70초당 1마리<br>목표 8마리</div>
+    </div>
+    <div class="gcard" style="border-color:rgba(255,194,71,.6); background:rgba(255,194,71,.09);">
+      <div class="g-ic">🌫️</div><div class="g-nm" style="color:var(--yellow);">나쁨</div>
+      <div class="g-p" style="color:var(--yellow);">3P</div>
+      <div class="g-d">0.40초당 1마리<br>목표 11마리</div>
+    </div>
+    <div class="gcard" style="border-color:rgba(255,93,93,.6); background:rgba(255,93,93,.09);">
+      <div class="g-ic">🚨</div><div class="g-nm" style="color:var(--red);">매우 나쁨</div>
+      <div class="g-p" style="color:var(--red);">4P</div>
+      <div class="g-d">0.25초당 1마리<br>목표 14마리</div>
+    </div>
+  </div>
+  <p class="lead">이기면 등급만큼 <b class="hl-g">포인트 획득</b>, 지면 <b class="hl-r">그만큼 차감</b>.
+    좋음 대비 매우 나쁨은 먼지 출현 속도가 <b class="hl-r">약 4배</b>입니다.</p>
+</section>
+
+<!-- ══════════ 6. 퀴즈 ══════════ -->
+<section class="slide" data-title="미세먼지 퀴즈"
+  data-note="목표량을 없애면 이런 O X 퀴즈가 나옵니다. 예를 들어 <b>‘미세먼지가 나쁜 날에도 환기를 시켜야 한다?’</b> ⋯ 정답은 <b>O</b>입니다. 밖이 나쁘다고 창문을 계속 닫아두면 조리 연기와 이산화탄소가 실내에 쌓이거든요. 하루 세 번, 10분 내외로 짧게 환기하는 게 맞습니다. 이렇게 <b>22개 문항</b>이 해설과 함께 들어 있습니다. 맞히면 퇴치 성공, 틀리면 포인트를 잃습니다.">
+  <span class="kicker">06 · 퀴즈로 퇴치</span>
+  <h2>맞혀야 <span class="hl">진짜로 퇴치</span>됩니다</h2>
+  <div class="card" style="border-color:rgba(167,139,250,.5); background:rgba(167,139,250,.08);">
+    <div style="font-size:clamp(13px,1.5vw,17px); color:var(--purple); font-weight:900; margin-bottom:12px;">❓ 미세먼지 퇴치 퀴즈</div>
+    <div style="font-size:clamp(18px,2.8vw,34px); font-weight:900; line-height:1.5;">
+      “미세먼지가 나쁜 날에도<br>환기를 시켜야 한다?”
+    </div>
+    <div style="display:flex; gap:14px; margin-top:22px;">
+      <div style="flex:1; text-align:center; padding:14px; border-radius:14px; background:rgba(61,220,132,.22); border:2px solid var(--green); font-size:clamp(22px,3vw,34px);">⭕</div>
+      <div style="flex:1; text-align:center; padding:14px; border-radius:14px; background:rgba(255,93,93,.12); border:2px solid rgba(255,93,93,.35); font-size:clamp(22px,3vw,34px); opacity:.5;">❌</div>
+    </div>
+  </div>
+  <div class="quote" style="border-left-color:var(--green); background:rgba(61,220,132,.09);">
+    정답은 <b class="hl-g">O</b> — 실내에는 조리 연기·이산화탄소가 쌓입니다.<br>
+    <span style="font-size:.72em; color:#c3d4ea; font-weight:600;">농도가 높아도 하루 3번, 10분 내외로 <b>짧게</b> 환기하세요. 총 22개 문항이 해설과 함께 들어 있습니다.</span>
+  </div>
+</section>
+
+<!-- ══════════ 7. 미션 ══════════ -->
+<section class="slide" data-title="일상 실천 미션"
+  data-note="게임 도중에는 이런 <b>미션 아이템</b>이 떨어집니다. 손 씻기, 대중교통 이용, 걷기, 짧은 환기, 물 마시기, 나무 심기, 분리배출. 받으면 <b>4포인트</b>를 얻습니다. 전부 <b>오늘 당장 할 수 있는 행동</b>만 골랐습니다. 게임 안에서 얻는 점수가 곧 현실의 실천 항목이 되도록 설계했습니다.">
+  <span class="kicker">07 · 일상 실천 미션</span>
+  <h2>게임 속 미션 = <span class="hl-y">오늘 할 수 있는 행동</span></h2>
+  <div class="grid5">
+    <div class="card" style="text-align:center;"><div class="ic">🧼</div><h3 style="font-size:clamp(12px,1.4vw,17px);">손 씻기</h3></div>
+    <div class="card" style="text-align:center;"><div class="ic">🚌</div><h3 style="font-size:clamp(12px,1.4vw,17px);">대중교통 이용</h3></div>
+    <div class="card" style="text-align:center;"><div class="ic">🚶</div><h3 style="font-size:clamp(12px,1.4vw,17px);">가까운 거리 걷기</h3></div>
+    <div class="card" style="text-align:center;"><div class="ic">🪟</div><h3 style="font-size:clamp(12px,1.4vw,17px);">짧게 환기하기</h3></div>
+    <div class="card" style="text-align:center;"><div class="ic">💧</div><h3 style="font-size:clamp(12px,1.4vw,17px);">물 자주 마시기</h3></div>
+  </div>
+  <div style="margin-top:24px;">
+    <span class="pbadge">🎯 미션 클리어 시 +4P</span>
+    <span class="pbadge" style="margin-left:10px; background:rgba(53,214,208,.14); border-color:rgba(53,214,208,.4); color:var(--cyan);">🌳 나무 심기 · ♻️ 분리배출도 포함</span>
+  </div>
+  <p class="lead">게임에서 얻는 점수가 곧 <b class="hl">현실의 실천 목록</b>이 되도록 만들었습니다.</p>
+</section>
+
+<!-- ══════════ 8. 포인트 보상 · 후원 ══════════ -->
+<section class="slide" data-title="포인트 보상 & 후원"
+  data-note="모은 포인트에는 목적지가 있습니다. <b>10포인트</b>가 되면 손소독제를 지급받아 화면의 먼지를 한 번에 없앨 수 있고, <b>50포인트</b>가 되면 <b>독감 예방 프로젝트에 후원</b>할 수 있습니다. 왜 하필 독감이냐면 — 미세먼지는 호흡기 점막을 손상시켜서 <b>감염병에 더 잘 걸리게</b> 만들기 때문입니다. 미세먼지 예방과 독감 예방은 이어져 있습니다.">
+  <span class="kicker">08 · 포인트의 목적지</span>
+  <h2>모은 포인트로 <span class="hl">누군가를 돕습니다</span></h2>
+  <div class="grid2">
+    <div class="card" style="border-color:rgba(255,194,71,.5); background:rgba(255,194,71,.07);">
+      <div class="ic">🧴</div>
+      <h3 class="hl-y">10P · 손소독제 지급</h3>
+      <p>소독 분사 아이템을 받아 화면의 미세먼지를 한 번에 제거할 수 있습니다.
+      실제로도 손 씻기가 어려울 때 손소독제가 대안이 됩니다.</p>
+    </div>
+    <div class="card" style="border-color:rgba(53,214,208,.5); background:rgba(53,214,208,.07);">
+      <div class="ic">💉💙</div>
+      <h3 class="hl">50P · 독감 예방 프로젝트 후원</h3>
+      <p>모은 포인트를 후원하면 게임 속 이웃들에게 독감 예방 접종과 마스크가 전달됩니다.</p>
+    </div>
+  </div>
+  <div class="quote">
+    왜 하필 <b class="hl">독감</b>일까요?<br>
+    <span style="font-size:.72em; color:#c3d4ea; font-weight:600;">미세먼지는 호흡기 점막을 손상시켜 <b>감염병에 더 잘 걸리게</b> 만듭니다. 미세먼지 예방과 독감 예방은 이어져 있습니다.</span>
+  </div>
+</section>
+
+<!-- ══════════ 9. 시연 ══════════ -->
+<section class="slide" data-title="🎮 실제 시연"
+  data-note="지금부터 직접 보여드리겠습니다. 캐릭터를 꾸미고, 좋음 단계를 한 번, 그리고 <b>매우 나쁨 단계</b>를 보여드릴게요. 먼지 양 차이를 눈으로 비교해 보세요. ⋯ (시연 후) 로딩 화면마다 <b>예방 수칙</b>이 뜨는 것도 봐 주세요. 기다리는 시간도 배우는 시간으로 만들었습니다."
+  style="align-items:center; justify-content:center; text-align:center;">
+  <span class="kicker" style="align-self:center;">09 · 실제 시연</span>
+  <h1 style="font-size:clamp(30px,5.4vw,64px);">직접 해보겠습니다 🎮</h1>
+  <p class="lead" style="max-width:none; text-align:center;">
+    캐릭터 꾸미기 → <b class="hl">좋음</b> 단계 → <b class="hl-r">매우 나쁨</b> 단계 순으로 보여드립니다.<br>
+    같은 게임인데 먼지 양이 얼마나 달라지는지 비교해 보세요.
+  </p>
+  <div style="margin-top:34px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
+    <a class="btn g" href="index.html" target="_blank" rel="noopener">▶ 게임 실행하기</a>
+    <button class="btn" onclick="openGamePopup()">🪟 작은 창으로 열기</button>
+  </div>
+  <p class="small" style="margin-top:26px;">
+    조작 : <b>← →</b> 이동 · <b>1 / 2</b> 마스크·손소독제 전환 · <b>ESC</b> 일시정지 · 발사는 자동
+  </p>
+</section>
+
+<!-- ══════════ 10. 엔딩 메시지 ══════════ -->
+<section class="slide" data-title="20단계 엔딩"
+  data-note="20단계를 모두 클리어하면 이 메시지가 나옵니다. ⋯ (천천히 읽기) <b>‘축하드립니다! 미세먼지 20단계까지 모두 클리어했습니다. 앞으로도 일상 생활에서 미세먼지 예방을 위해서 조금만 더 힘을 써주세요.’</b> ⋯ 게임은 여기서 끝나지만, 진짜 미세먼지는 내일도 옵니다. 그래서 마지막 문장을 이렇게 정했습니다.">
+  <span class="kicker">10 · 최종 엔딩</span>
+  <h2 style="text-align:center;">🎉 20단계 클리어 🎉</h2>
+  <div class="quote" style="text-align:center; border-left:0; border-radius:22px;
+       background:linear-gradient(135deg,rgba(255,194,71,.14),rgba(53,214,208,.1));
+       border:2px solid rgba(255,194,71,.4); padding:clamp(24px,4vw,48px);">
+    <span style="font-size:1.12em; color:var(--yellow); font-weight:900;">
+      축하드립니다!<br>미세먼지 20단계까지 모두 클리어했습니다.
+    </span>
+    <br><br>
+    <span style="font-size:.92em; font-weight:700;">
+      앞으로도 일상 생활에서 미세먼지 예방을 위해서<br>조금만 더 힘을 써주세요.
+    </span>
+  </div>
+  <p class="lead" style="text-align:center; max-width:none; margin-top:28px;">
+    게임은 여기서 끝나지만, <b class="hl-y">미세먼지는 내일도 옵니다.</b>
+  </p>
+</section>
+
+<!-- ══════════ 11. 마무리 ══════════ -->
+<section class="slide" data-title="마무리 · 실천 5가지"
+  data-note="오늘 딱 다섯 가지만 기억해 주세요. 외출 전 예보 확인, KF80 이상 마스크, 외출 후 손과 얼굴 씻기, 하루 세 번 짧은 환기, 가까운 거리는 걷거나 대중교통. ⋯ <b>마스크 한 장, 손 씻기 한 번이 우리 건강을 지킵니다.</b> 이 게임을 통해 그 사실을 기억해 주시면 좋겠습니다. 이상으로 발표를 마치겠습니다. 감사합니다.">
+  <span class="kicker">11 · 마무리</span>
+  <h2>오늘부터 <span class="hl-g">이 다섯 가지</span>만</h2>
+  <ul class="checks">
+    <li>외출 전 <b>미세먼지 예보</b> 확인하기</li>
+    <li>외출할 땐 <b>KF80 이상</b> 마스크, 코와 턱까지 덮기</li>
+    <li>외출 후 <b>손·얼굴</b> 깨끗이 씻기</li>
+    <li>나쁜 날에도 <b>하루 3번, 10분</b> 짧게 환기하기</li>
+    <li>가까운 거리는 <b>걷거나 대중교통</b> 이용하기</li>
+  </ul>
+  <div class="quote" style="margin-top:26px;">
+    마스크 한 장, 손 씻기 한 번이<br><b class="hl-y">우리 건강을 지킵니다.</b>
+  </div>
+</section>
+
+<!-- ══════════ 12. 감사합니다 ══════════ -->
+<section class="slide" data-title="감사합니다"
+  data-note="이상으로 발표를 마치겠습니다. 감사합니다. (질문 받기)"
+  style="align-items:center; justify-content:center; text-align:center;">
+  <div style="font-size:clamp(50px,9vw,110px); margin-bottom:18px;">🌤️</div>
+  <h1 style="background:linear-gradient(90deg,#7fc4ff,#35d6d0,#7fc4ff);
+     -webkit-background-clip:text; background-clip:text; color:transparent;">감사합니다</h1>
+  <p class="lead" style="text-align:center; max-width:none;">깨끗한 공기, 우리가 함께 지켜요 😷💙</p>
+  <p class="small" style="margin-top:30px;">미세먼지 퇴치 대작전 · 웹 게임으로 배우는 미세먼지 예방</p>
+</section>
+
+</div>
+
+<!-- ══════════ 발표자 노트 ══════════ -->
+<div id="notes">
+  <div class="nt">🎤 발표자 노트</div>
+  <div class="nb" id="noteBody"></div>
+</div>
+
+<!-- ══════════ 하단 바 ══════════ -->
+<div id="bar">
+  <div class="nav">
+    <button id="btnPrev">◀</button>
+    <button id="btnNext">▶</button>
+  </div>
+  <span class="idx" id="idx">1 / 13</span>
+  <span class="title" id="slideTitle">표지</span>
+  <button id="btnNotes">🎤 노트 <span style="opacity:.6">S</span></button>
+  <button id="btnFull">⛶ 전체화면 <span style="opacity:.6">F</span></button>
+  <button id="btnHelp">? 도움말</button>
+  <div id="timer" title="클릭하면 시작/정지 · 더블클릭 초기화">⏱ 3:00</div>
+</div>
+
+<!-- ══════════ 도움말 ══════════ -->
+<div id="help">
+  <div class="box">
+    <h3>⌨️ 단축키</h3>
+    <div class="kv"><span>다음 슬라이드</span><span><kbd>→</kbd> <kbd>Space</kbd> <kbd>PgDn</kbd> <kbd>클릭</kbd></span></div>
+    <div class="kv"><span>이전 슬라이드</span><span><kbd>←</kbd> <kbd>PgUp</kbd></span></div>
+    <div class="kv"><span>처음 / 마지막</span><span><kbd>Home</kbd> <kbd>End</kbd></span></div>
+    <div class="kv"><span>발표자 노트</span><span><kbd>S</kbd></span></div>
+    <div class="kv"><span>전체화면</span><span><kbd>F</kbd></span></div>
+    <div class="kv"><span>3분 타이머 시작/정지</span><span><kbd>T</kbd></span></div>
+    <div class="kv"><span>타이머 초기화</span><span><kbd>R</kbd></span></div>
+    <div class="kv"><span>도움말 닫기</span><span><kbd>ESC</kbd></span></div>
+    <p class="small" style="margin-top:20px; line-height:1.7;">
+      💡 <b>발표 팁</b> — <kbd>F</kbd>로 전체화면 후 <kbd>T</kbd>로 타이머를 시작하세요.
+      슬라이드마다 <kbd>S</kbd>를 누르면 읽을 멘트가 나옵니다.<br>
+      9번 슬라이드의 <b>게임 실행하기</b> 버튼으로 바로 시연할 수 있습니다.
+    </p>
+    <button class="btn" style="width:100%; justify-content:center; margin-top:18px;" onclick="toggleHelp(false)">닫기</button>
+  </div>
+</div>
+
+<script>
+"use strict";
+const slides = Array.from(document.querySelectorAll('.slide'));
+const N = slides.length;
+let cur = 0;
+
+const $ = id => document.getElementById(id);
+
+function go(i){
+  cur = Math.max(0, Math.min(N-1, i));
+  slides.forEach((s,k)=>s.classList.toggle('on', k===cur));
+  $('idx').textContent = (cur+1) + " / " + N;
+  $('slideTitle').textContent = slides[cur].dataset.title || "";
+  $('noteBody').innerHTML = slides[cur].dataset.note || "<span style='color:#7e93b3'>(이 슬라이드에는 노트가 없습니다)</span>";
+  $('prog').style.width = ((cur+1)/N*100) + "%";
+  $('notes').scrollTop = 0;
+  try{ location.hash = "s" + (cur+1); }catch(e){}
+}
+const next = ()=> go(cur+1);
+const prev = ()=> go(cur-1);
+
+/* ---- 타이머 (3분) ---- */
+const LIMIT = 180;
+let elapsed = 0, running = false, tick = null;
+function fmt(s){
+  const neg = s < 0; s = Math.abs(s);
+  return (neg?"+":"") + Math.floor(s/60) + ":" + String(s%60).padStart(2,'0');
+}
+function paintTimer(){
+  const left = LIMIT - elapsed;
+  $('timer').textContent = "⏱ " + fmt(left);
+  $('timer').classList.toggle('run', running && left > 0);
+  $('timer').classList.toggle('over', left <= 0);
+}
+function toggleTimer(){
+  running = !running;
+  if(running){
+    tick = setInterval(()=>{ elapsed++; paintTimer(); }, 1000);
+  }else{
+    clearInterval(tick);
+  }
+  paintTimer();
+}
+function resetTimer(){
+  clearInterval(tick); running = false; elapsed = 0; paintTimer();
+}
+
+/* ---- 노트 / 전체화면 / 도움말 ---- */
+function toggleNotes(){ $('notes').classList.toggle('on'); }
+function toggleFull(){
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+  else document.exitFullscreen().catch(()=>{});
+}
+function toggleHelp(on){
+  $('help').classList.toggle('on', on !== undefined ? on : !$('help').classList.contains('on'));
+}
+function openGamePopup(){
+  window.open('index.html','fdgame','width=520,height=820,menubar=no,toolbar=no,location=no');
+}
+
+/* ---- 이벤트 ---- */
+$('btnPrev').onclick  = e => { e.stopPropagation(); prev(); };
+$('btnNext').onclick  = e => { e.stopPropagation(); next(); };
+$('btnNotes').onclick = e => { e.stopPropagation(); toggleNotes(); };
+$('btnFull').onclick  = e => { e.stopPropagation(); toggleFull(); };
+$('btnHelp').onclick  = e => { e.stopPropagation(); toggleHelp(true); };
+$('timer').onclick    = e => { e.stopPropagation(); toggleTimer(); };
+$('timer').ondblclick = e => { e.stopPropagation(); resetTimer(); };
+$('help').onclick     = e => { if(e.target === $('help')) toggleHelp(false); };
+
+// 화면 클릭으로 다음 (버튼·링크 제외)
+$('stage').onclick = e => {
+  if(e.target.closest('a,button')) return;
+  next();
+};
+
+document.addEventListener('keydown', e=>{
+  if($('help').classList.contains('on') && e.key !== 'Escape') return;
+  switch(e.key){
+    case 'ArrowRight': case ' ': case 'PageDown': case 'Enter':
+      e.preventDefault(); next(); break;
+    case 'ArrowLeft': case 'PageUp':
+      e.preventDefault(); prev(); break;
+    case 'Home': e.preventDefault(); go(0); break;
+    case 'End':  e.preventDefault(); go(N-1); break;
+    case 's': case 'S': toggleNotes(); break;
+    case 'f': case 'F': toggleFull(); break;
+    case 't': case 'T': toggleTimer(); break;
+    case 'r': case 'R': resetTimer(); break;
+    case 'Escape': toggleHelp(false); break;
+  }
+});
+
+// 터치 스와이프
+let tx = 0;
+addEventListener('touchstart', e=>{ tx = e.changedTouches[0].clientX; }, {passive:true});
+addEventListener('touchend', e=>{
+  const d = e.changedTouches[0].clientX - tx;
+  if(Math.abs(d) > 60){ d < 0 ? next() : prev(); }
+}, {passive:true});
+
+/* ---- 시작 ---- */
+const h = parseInt((location.hash||"").replace('#s',''), 10);
+go(isNaN(h) ? 0 : h-1);
+paintTimer();
+</script>
+</body>
+</html>
